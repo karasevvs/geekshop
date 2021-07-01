@@ -3,24 +3,24 @@
     "model": "products.productcategory",
     "pk": 1,
     "fields": {
-      "name": "Одежда",
-      "description": "тут описание"
+      "name": "РћРґРµР¶РґР°",
+      "description": "С‚СѓС‚ РѕРїРёСЃР°РЅРёРµ"
     }
   },
   {
     "model": "products.productcategory",
     "pk": 2,
     "fields": {
-      "name": "Обувь",
-      "description": "категория для обуви"
+      "name": "РћР±СѓРІСЊ",
+      "description": "РєР°С‚РµРіРѕСЂРёСЏ РґР»СЏ РѕР±СѓРІРё"
     }
   },
   {
     "model": "products.productcategory",
     "pk": 3,
     "fields": {
-      "name": "Рюкзаки",
-      "description": "различные рюкзаки"
+      "name": "Р СЋРєР·Р°РєРё",
+      "description": "СЂР°Р·Р»РёС‡РЅС‹Рµ СЂСЋРєР·Р°РєРё"
     }
   }
 ]
