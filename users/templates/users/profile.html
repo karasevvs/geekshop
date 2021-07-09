@@ -17,7 +17,7 @@
                          {% endif %}"
                          class="img-thumbnail">
                 </div>
-                <form action="{% url 'users:profile' %}" method="post">
+                <form action="{% url 'users:profile' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-row">
                         <div class="col-lg-6">
@@ -36,10 +36,10 @@
                     <div class="form-row mb-2">
                         <div class="col-lg-12">
                             <div class="custom-file">
+                                {{ form.image }}
                                 <input type="file" class="custom-file-input" id="userAvatar" size="50">
                                 <label class="custom-file-label" for="{{ form.image.id_for_label }}">Выберите
                                     изображение</label>
-                                {{ form.image }}
                             </div>
                         </div>
                     </div>
