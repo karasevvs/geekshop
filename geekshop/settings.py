@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'products',
     'django.contrib.humanize',
     'users',
+    'baskets',
 ]
 
 MIDDLEWARE = [
