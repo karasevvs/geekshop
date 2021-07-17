@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponseRedirect
 from users.models import User
+from products.models import ProductCategory
 from admins.forms import UserAdminRegistrationForm, UserAdminProfileForm
 from django.urls import reverse
 from django.contrib.auth.decorators import user_passes_test
@@ -58,3 +59,11 @@ def admin_users_remove(request, pk):
     user.is_active = False
     user.save()
     return HttpResponseRedirect(reverse('admins:admin_users'))
+
+
+@user_passes_test(lambda u: u.is_staff)
+def admin_category(request):
+    context = {
+        'title': 'Админ-панель - Категории',
+        'categories': ProductCategory.objects.all()}
+    return render(request, 'admins/admin-category-read.html', context)
