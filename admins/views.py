@@ -1,7 +1,8 @@
 from django.shortcuts import render, HttpResponseRedirect
 from users.models import User
 from products.models import ProductCategory, Product
-from admins.forms import UserAdminRegistrationForm, UserAdminProfileForm, ProductCategoryAdminProfileForm
+from admins.forms import UserAdminRegistrationForm, UserAdminProfileForm, ProductCategoryAdminProfileForm, \
+    ProductAdminProfileForm
 from django.urls import reverse
 from django.contrib.auth.decorators import user_passes_test
 
@@ -119,3 +120,22 @@ def admin_product(request):
         'title': 'Админ-панель - Продукты',
         'products': Product.objects.all()}
     return render(request, 'admins/admin-products-read.html', context)
+
+
+@user_passes_test(lambda u: u.is_staff)
+def admin_products_create(request):
+    if request.method == 'POST':
+        form = ProductAdminProfileForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('admins:admin_product'))
+        else:
+            print(form.errors)
+    else:
+        form = ProductAdminProfileForm()
+
+    categories = ProductCategory.objects.all()
+    context = {'title': 'Админ-панель - Создание продукта',
+               'form': form,
+               'categories': categories}
+    return render(request, 'admins/admin-products-create.html', context)
