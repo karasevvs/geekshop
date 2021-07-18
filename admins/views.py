@@ -134,8 +134,7 @@ def admin_products_create(request):
     else:
         form = ProductAdminProfileForm()
 
-    categories = ProductCategory.objects.all()
     context = {'title': 'Админ-панель - Создание продукта',
                'form': form,
-               'categories': categories}
+               }
     return render(request, 'admins/admin-products-create.html', context)

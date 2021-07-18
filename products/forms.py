@@ -11,13 +11,12 @@ class ProductCategoryForm(UserChangeForm):
         fields = ('name', 'description')
 
 
-class ProductForm(UserChangeForm):
+class ProductForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control py-4'}))
-    description = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control py-4'}))
-    price = forms.DecimalField(widget=forms.TextInput(attrs={'class': 'form-control py-4'}))
-    quantity = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control py-4'}))
-    category = forms.IntegerField(widget=forms.TextInput(attrs={'class': 'form-control py-4'}))
+    description = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control py-4'}))
+    price = forms.DecimalField(widget=forms.NumberInput(attrs={'class': 'form-control py-4'}), decimal_places=2)
+    quantity = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control py-4'}))
 
     class Meta:
         model = Product
-        fields = ('name', 'description', 'price', 'quantity', 'category')
+        fields = ('name', 'description', 'price', 'quantity')
