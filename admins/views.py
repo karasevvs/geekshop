@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import user_passes_test
 
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.utils.decorators import method_decorator
 
 
 @user_passes_test(lambda u: u.is_staff)
@@ -25,6 +26,9 @@ class UserListView(ListView):
         context['title'] = 'Админ-панель - Пользователи'
         return context
 
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super(UserListView, self).dispatch(request, *args, **kwargs)
 
 
 class UserCreateView(CreateView):
