@@ -37,6 +37,15 @@ class UserCreateView(CreateView):
     template_name = 'admins/admin-users-create.html'
     success_url = reverse_lazy('admins:admin_users')
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(UserCreateView, self).get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Админ-панель - Создание пользователя'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super(UserCreateView, self).dispatch(request, *args, **kwargs)
+
 
 class UserUpdateView(UpdateView):
     model = User
@@ -44,11 +53,29 @@ class UserUpdateView(UpdateView):
     template_name = 'admins/admin-users-update-delete.html'
     success_url = reverse_lazy('admins:admin_users')
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(UserUpdateView, self).get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Админ-панель - Редактирование пользователя'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super(UserUpdateView, self).dispatch(request, *args, **kwargs)
+
 
 class UserDeleteView(DeleteView):
     model = User
     template_name = 'admins/admin-users-update-delete.html'
     success_url = reverse_lazy('admins:admin_users')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(UserDeleteView, self).get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Админ-панель - Удаление пользователя'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super(UserDeleteView, self).dispatch(request, *args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -59,12 +86,19 @@ class UserDeleteView(DeleteView):
 
 # Работа с категориями
 
-@user_passes_test(lambda u: u.is_staff)
-def admin_category(request):
-    context = {
-        'title': 'Админ-панель - Категории',
-        'categories': ProductCategory.objects.all()}
-    return render(request, 'admins/admin-category-read.html', context)
+
+class CategoryListView(ListView):
+    model = ProductCategory
+    template_name = 'admins/admin-category-read.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(CategoryListView, self).get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Админ-панель - Категории'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super(CategoryListView, self).dispatch(request, *args, **kwargs)
 
 
 @user_passes_test(lambda u: u.is_staff)
@@ -204,3 +238,14 @@ def admin_products_remove(request, pk):
 #     user.is_active = False
 #     user.save()
 #     return HttpResponseRedirect(reverse('admins:admin_users'))
+
+
+# Категории продуктов
+
+
+# @user_passes_test(lambda u: u.is_staff)
+# def admin_category(request):
+#     context = {
+#         'title': 'Админ-панель - Категории',
+#         'categories': ProductCategory.objects.all()}
+#     return render(request, 'admins/admin-category-read.html', context)
