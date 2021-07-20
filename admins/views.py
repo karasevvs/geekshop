@@ -151,53 +151,65 @@ class CategoryCreateView(CreateView):
 # Работа с продуктами
 
 
-@user_passes_test(lambda u: u.is_staff)
-def admin_product(request):
-    context = {
-        'title': 'Админ-панель - Продукты',
-        'products': Product.objects.all()}
-    return render(request, 'admins/admin-products-read.html', context)
+class ProductListView(ListView):
+    model = Product
+    template_name = 'admins/admin-products-read.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ProductListView, self).get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Админ-панель - Продукты'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProductListView, self).dispatch(request, *args, **kwargs)
 
 
-@user_passes_test(lambda u: u.is_staff)
-def admin_products_create(request):
-    if request.method == 'POST':
-        form = ProductAdminProfileForm(data=request.POST, files=request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('admins:admin_product'))
-        else:
-            print(form.errors)
-    else:
-        form = ProductAdminProfileForm()
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductAdminProfileForm
+    template_name = 'admins/admin-products-create.html'
+    success_url = reverse_lazy('admins:admin_product')
 
-    context = {'title': 'Админ-панель - Создание продукта',
-               'form': form,
-               }
-    return render(request, 'admins/admin-products-create.html', context)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ProductCreateView, self).get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Админ-панель - Создание продукта'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProductCreateView, self).dispatch(request, *args, **kwargs)
 
 
-@user_passes_test(lambda u: u.is_staff)
-def admin_products_update(request, pk):
-    selected_product = Product.objects.get(id=pk)
-    if request.method == 'POST':
-        form = ProductAdminProfileForm(instance=selected_product, files=request.FILES, data=request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('admins:admin_product'))
-    form = ProductAdminProfileForm(instance=selected_product)
-    context = {'title': 'Админ-панель - Редактирование продукта',
-               'form': form,
-               'selected_product': selected_product,
-               }
-    return render(request, 'admins/admin-products-update-delete.html', context)
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductAdminProfileForm
+    template_name = 'admins/admin-products-update-delete.html'
+    success_url = reverse_lazy('admins:admin_product')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ProductUpdateView, self).get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Админ-панель - Редактирование продукта'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProductUpdateView, self).dispatch(request, *args, **kwargs)
 
 
-@user_passes_test(lambda u: u.is_staff)
-def admin_products_remove(request, pk):
-    product = Product.objects.get(id=pk)
-    product.delete()
-    return HttpResponseRedirect(reverse('admins:admin_product'))
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'admins/admin-products-update-delete.html'
+    success_url = reverse_lazy('admins:admin_product')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ProductDeleteView, self).get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Админ-панель - Удаление продукта'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_staff))
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProductDeleteView, self).dispatch(request, *args, **kwargs)
 
 # @user_passes_test(lambda u: u.is_staff)
 # def admin_users(request):
@@ -297,4 +309,55 @@ def admin_products_remove(request, pk):
 #                'form': form}
 #     return render(request, 'admins/admin-category-create.html', context)
 
+
+# работа с продуктами
+
+
+# @user_passes_test(lambda u: u.is_staff)
+# def admin_product(request):
+#     context = {
+#         'title': 'Админ-панель - Продукты',
+#         'products': Product.objects.all()}
+#     return render(request, 'admins/admin-products-read.html', context)
+
+
+# @user_passes_test(lambda u: u.is_staff)
+# def admin_products_create(request):
+#     if request.method == 'POST':
+#         form = ProductAdminProfileForm(data=request.POST, files=request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('admins:admin_product'))
+#         else:
+#             print(form.errors)
+#     else:
+#         form = ProductAdminProfileForm()
+#
+#     context = {'title': 'Админ-панель - Создание продукта',
+#                'form': form,
+#                }
+#     return render(request, 'admins/admin-products-create.html', context)
+
+
+# @user_passes_test(lambda u: u.is_staff)
+# def admin_products_update(request, pk):
+#     selected_product = Product.objects.get(id=pk)
+#     if request.method == 'POST':
+#         form = ProductAdminProfileForm(instance=selected_product, files=request.FILES, data=request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('admins:admin_product'))
+#     form = ProductAdminProfileForm(instance=selected_product)
+#     context = {'title': 'Админ-панель - Редактирование продукта',
+#                'form': form,
+#                'selected_product': selected_product,
+#                }
+#     return render(request, 'admins/admin-products-update-delete.html', context)
+
+
+# @user_passes_test(lambda u: u.is_staff)
+# def admin_products_remove(request, pk):
+#     product = Product.objects.get(id=pk)
+#     product.delete()
+#     return HttpResponseRedirect(reverse('admins:admin_product'))
 
