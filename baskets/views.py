@@ -45,3 +45,11 @@ def basket_edit(request, id, quantity):
         context = {'baskets': baskets}
         result = render_to_string('baskets/basket.html', context)
         return JsonResponse({'result': result})
+
+
+
+def view(request):
+    context = {'title': 'GeekShop - Корзина',
+               'baskets': Basket.objects.filter(user=request.user),
+               }
+    return render(request, 'baskets/index.html', context)

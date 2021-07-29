@@ -78,7 +78,7 @@ def verify(request, email, activation_key):
             user.is_active = True
             user.save()
             auth.login(request, user)
-            return render(request, 'users/verify.html')
+        return render(request, 'users/verify.html')
     return HttpResponseRedirect(reverse('users:login'))
 
 
