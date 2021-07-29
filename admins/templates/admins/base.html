@@ -40,6 +40,15 @@
             </div>
         </li>
     </ul>
+    <ul class="navbar-nav ml-auto ml-md-0">
+        <a class="nav-link" href=" {% url 'baskets:view' %} ">
+                  <span>
+                            {% if basket %}
+                                {{ basket.0.total_sum|floatformat:0 }} руб ({{ basket.0.total_quantity }} шт)
+                            {% endif %}
+                        </span>
+        </a>
+    </ul>
 </nav>
 <div id="layoutSidenav">
     <div id="layoutSidenav_nav">
