@@ -1,0 +1,12 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <h3>Успех, регистрация завершена!</h3>
+        <div>Пользователь {{ user.email }} успешно активирован!</div>
+    {% else %}
+                <h3>Ошибка, регистрация не завершена!</h3>
+        <div>Пользователь {{ user.email }} не активирован!</div>
+    {% endif %}
+
+{% endblock %}
