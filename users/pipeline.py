@@ -51,6 +51,9 @@ def save_user_profile(backend, user, response, *args, **kwargs):
         result = requests.get(photo_url, stream=True)
         user.image.save(file_name, result.raw)
 
+    if response.get('email'):
+        user.email = response['email']
+
     user.save()
 
 
