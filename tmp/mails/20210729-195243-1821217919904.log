@@ -1,0 +1,11 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: Verify your account
+From: django@gb.local
+To: jlkj89@mail.ru
+Date: Thu, 29 Jul 2021 16:52:43 -0000
+Message-ID: <162757756339.9472.432017658776177209@aser>
+
+http://127.0.0.1:8000/users/verify/jlkj89@mail.ru/720889a0dcd9fab6d3e54c10d7c6ad1cdb856bfe/
+-------------------------------------------------------------------------------
