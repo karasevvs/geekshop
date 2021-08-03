@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from django.utils import timezone
 
@@ -43,6 +44,13 @@ def save_user_profile(backend, user, response, *args, **kwargs):
             user.delete()
             raise AuthForbidden('social_core.backends.vk.VKOAuth2')
         user.shopuserprofile.age = age
+
+    if data.get('has_photo'):
+        file_name = f'ID_{user.id}_photo_vk_id_{data.get("id")}.jpg'
+        photo_url = data.get('photo_max_orig')
+        result = requests.get(photo_url, stream=True)
+        user.image.save(file_name, result.raw)
+
     user.save()
 
 
