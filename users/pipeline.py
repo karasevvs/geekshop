@@ -28,9 +28,9 @@ def save_user_profile(backend, user, response, *args, **kwargs):
 
     if data.get('sex'):
         if data['sex'] == 1:
-            user.shopuserprofile.gender = ShopUserProfile.MALE
-        if data['sex'] == 2:
             user.shopuserprofile.gender = ShopUserProfile.FEMALE
+        if data['sex'] == 2:
+            user.shopuserprofile.gender = ShopUserProfile.MALE
 
     if data.get('about'):
         user.shopuserprofile.aboutMe = data['about']
