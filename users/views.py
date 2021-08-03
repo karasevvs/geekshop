@@ -83,7 +83,7 @@ def verify(request, email, activation_key):
             user.is_active = True
             user.save()
             # backend='django.contrib.auth.backends.ModelBackend'
-            auth.login(request, user)
+            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         return render(request, 'users/verify.html')
     return HttpResponseRedirect(reverse('users:login'))
 
