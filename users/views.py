@@ -4,7 +4,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import auth, messages
 from django.urls import reverse
 
-from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
+from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm, ShopUserProfileEdit
 from baskets.models import Basket
 from django.contrib.auth.decorators import login_required
 
@@ -59,13 +59,18 @@ def profile(request):
     user = request.user
     if request.method == 'POST':
         form = UserProfileForm(instance=user, files=request.FILES, data=request.POST)
-        if form.is_valid():
+        profile_form = ShopUserProfileEdit(request.POST, instance=request.user.shopuserprofile)
+
+        if form.is_valid() and profile_form.is_valid():
             form.save()
             messages.success(request, 'Изменения успешно сохранены!')
             return HttpResponseRedirect(reverse('users:profile'))
+    else:
+        profile_form = ShopUserProfileEdit(instance=request.user.shopuserprofile)
     form = UserProfileForm(instance=user)
     context = {'title': 'GeekShop - Личный кабинет',
                'form': form,
+               'profile_form': profile_form,
                'baskets': Basket.objects.filter(user=user),
                }
     return render(request, 'users/profile.html', context)
@@ -77,7 +82,8 @@ def verify(request, email, activation_key):
         if user.activation_key == activation_key and not user.is_activation_key_expired():
             user.is_active = True
             user.save()
-            auth.login(request, user)
+            # backend='django.contrib.auth.backends.ModelBackend'
+            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         return render(request, 'users/verify.html')
     return HttpResponseRedirect(reverse('users:login'))
 
