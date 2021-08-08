@@ -50,16 +50,32 @@
                 </li>
 
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'users:profile' %}">{{ user.username }}
-                            <i class="fas fa-user-circle"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href=" {% url 'orderapp:orders_list' %} ">Заказы <i
-                                class="fas fa-shopping-bag"></i>
-                        </a>
-                    </li>
+                    <div class="dropdown">
+
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                            Профиль/Заказы
+                            </a>
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <div class="text-center">
+                                <li>
+                                    <a href="{% url 'users:profile' %}">{{ user.username }}
+                                        <i class="fas fa-user-circle"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href=" {% url 'orderapp:orders_list' %} ">Заказы
+                                        <i class="fas fa-shopping-bag"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'users:logout' %}">Выйти
+                                        <i class="fas fa-sign-out-alt"></i>
+                                    </a>
+                                </li>
+                            </div>
+                        </ul>
+                    </div>
                     {% if user.is_staff or user.is_superuser %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'admins:index' %}">
