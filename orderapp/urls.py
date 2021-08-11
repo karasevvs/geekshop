@@ -11,4 +11,5 @@ urlpatterns = [
     path('read/<int:pk>/', views.OrderItemsRead.as_view(), name='read'),
 
     path('forming/complete/<int:pk>/', views.order_forming_complete, name='order_forming_complete'),
+    path('product/<pk>/price/', views.product_price),
 ]
