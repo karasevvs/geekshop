@@ -40,6 +40,7 @@ class OrderItemCreate(CreateView):
                     form.initial['product'] = basket_items[num].product
                     form.initial['quantity'] = basket_items[num].quantity
                     form.initial['price'] = basket_items[num].product.price
+                    form.initial['total_price'] = basket_items[num].total_sum()
             else:
                 formset = OrderFormset()
 
@@ -78,8 +79,8 @@ class OrderItemUpdate(UpdateView):
             for form in formset.forms:
                 if form.instance.pk:
                     form.initial['price'] = form.instance.product.price
+                    form.initial['total_price'] = form.instance.get_product_cost
             data['orderitems'] = formset
-
         return data
 
     def form_valid(self, form):

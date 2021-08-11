@@ -5,7 +5,6 @@ window.onload = function () {
     var price_arr = [];
 
     var TOTAL_FORMS = parseInt($('input[name=orderitems-TOTAL_FORMS]').val());
-    console.log(TOTAL_FORMS);
     var order_total_quantity = parseInt($('.order_total_quantity').text()) || 0;
     var order_total_cost = parseFloat($('.order_total_cost').text().replace(',', '.')) || 0;
 
@@ -51,6 +50,11 @@ window.onload = function () {
 
         $('.order_total_quantity').html(order_total_quantity);
         $('.order_total_cost').html(order_total_cost);
+
+        for (var i = 0; i < TOTAL_FORMS; i++) {
+            console.log(price_arr[i] * quantity_arr[i]);
+            $('.orderitems-0-' + i +'-total_price').html(price_arr[i] * quantity_arr[i].toFixed(2))
+        }
 
     }
 
